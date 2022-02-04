@@ -1,16 +1,29 @@
 ﻿using Wordle;
 
 string word = "pitch";
-const string tab = "   ";
 
 Console.WriteLine();
-Console.Write(tab + "→ ");
+Console.Write(" → ");
 string? guess = Console.ReadLine();
+byte[] result;
 
 for (int i = 0; i < 6; i++)
 {
 #pragma warning disable CS8604 // Possible null reference argument.
-    var result = Checker.CharCheck(guess, word);
+    check:
+    try
+    {
+        result = Checker.CharCheck(guess, word);
+    }
+    catch (ArgumentException)
+    {
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        Console.WriteLine("                              ");
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        Console.Write(" → ");
+        guess = Console.ReadLine();
+        goto check;
+    }
 #pragma warning restore CS8604 // Possible null reference argument.
 
     Console.SetCursorPosition(0, Console.CursorTop - 1);
@@ -19,9 +32,9 @@ for (int i = 0; i < 6; i++)
     if (Checker.WinCheck(result)) return;
     else if (i == 5) continue;
 
-    Console.Write(tab + "→ ");
+    Console.Write(" → ");
     guess = Console.ReadLine();
 }
 
-Console.WriteLine(tab + "You lost!");
-Console.WriteLine(tab + $"The word was: {word}");
+Console.WriteLine("   You lost!");
+Console.WriteLine($"   The word was: {word}");
