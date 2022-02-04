@@ -16,8 +16,8 @@ internal static class Builder
         {
             sb.Append(guessResult[i] switch
             {
-                1 => ASCI_FRONT_COLOR_ORANGE + ASCI_BACK_COLOR_ORANGE + guess[i] + ASCI_RESET,
-                2 => ASCI_FRONT_COLOR_GREEN + ASCI_BACK_COLOR_GREEN + guess[i] + ASCI_RESET,
+                1 => ANSI_FRONT_COLOR_ORANGE + ANSI_BACK_COLOR_ORANGE + guess[i] + ANSI_RESET,
+                2 => ANSI_FRONT_COLOR_GREEN + ANSI_BACK_COLOR_GREEN + guess[i] + ANSI_RESET,
                 _ => guess[i]
             });
         }
@@ -25,13 +25,20 @@ internal static class Builder
         return sb.ToString();
     }
 
-    // All the ANSI color codes used
+    internal static string DisplayStringBuilder(string guess, byte[] result, int round, int total)
+    {
+        return $"   {ResultStringBuilder(guess, result)} │ {round}/{total}{(Checker.WinCheck(result) ? " " + YOU_WIN : "")}";
+    }
 
-    internal const string ASCI_FRONT_COLOR_ORANGE = "\u001b[38;5;230m";
-    internal const string ASCI_BACK_COLOR_ORANGE = "\u001b[48;5;208m";
+    // All the ANSI codes used
 
-    internal const string ASCI_FRONT_COLOR_GREEN = "\u001b[38;5;157m";
-    internal const string ASCI_BACK_COLOR_GREEN = "\u001b[48;5;28m";
+    internal const string YOU_WIN = "\u001b[1m" + "\u001b[4m" + "YOU WIN" + ANSI_RESET;
 
-    internal const string ASCI_RESET = "\u001b[0m";
+    internal const string ANSI_FRONT_COLOR_ORANGE = "\u001b[38;5;230m";
+    internal const string ANSI_BACK_COLOR_ORANGE = "\u001b[48;5;208m";
+
+    internal const string ANSI_FRONT_COLOR_GREEN = "\u001b[38;5;157m";
+    internal const string ANSI_BACK_COLOR_GREEN = "\u001b[48;5;28m";
+
+    internal const string ANSI_RESET = "\u001b[0m";
 }
